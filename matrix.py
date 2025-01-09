@@ -1,6 +1,7 @@
 from icecream import ic
 
-def submatrix(in_matrix: list[[]], size: int, start_index: int, end_index: int, row: int) -> list[[]]:
+
+def submatrix(in_matrix: list[list], size: int, start_index: int, end_index: int, row: int) -> list[list]:
     """ Creates a sub matrix of size extra items around the center (x, y) """
     start_column: int = start_index - size if start_index >= size else 0
     end_column: int = end_index + size if end_index + size < len(in_matrix[row]) else len(in_matrix[row])
@@ -19,11 +20,21 @@ def submatrix_from(in_matrix: list[[]], size: int, x: int, y: int) -> list[[]]:
     end_x = x + size if x + size <= len(in_matrix[y]) else len(in_matrix[y])
     start_y = y
     end_y = y + size if y + size <= len(in_matrix) else len(in_matrix)
-    sub_matrix = [a_row[start_x:end_x] for a_row in in_matrix[start_y:end_y]]
+    sub_matrix = [a_row[start_x: end_x] for a_row in in_matrix[start_y: end_y]]
     return sub_matrix
 
 
-def get_column(matrix, column_number:int):
+def centered_submatrix_from(in_matrix: list[list], size: int, x: int, y: int) -> list[list]:
+    """ creates a sub matrix with size extra rows and columns with center at x, y """
+    start_x = x - size if x - size >= 0 else x
+    end_x = x + size if x + size <= len(in_matrix[y]) else len(in_matrix[y])
+    start_y = y - size if y - size >= 0 else y
+    end_y = y + size if y + size < len(in_matrix) else len(in_matrix)
+    sub_matrix = [a_row[start_x: end_x + 1] for a_row in in_matrix[start_y: end_y + 1]]
+    return sub_matrix
+
+
+def get_column(matrix, column_number: int):
     column = []
     for row in matrix:
         try:
@@ -31,6 +42,7 @@ def get_column(matrix, column_number:int):
         except IndexError:
             break
     return column
+
 
 def get_diagonals(matrix):
     """ returns a tuple of up_down and down_up"""
