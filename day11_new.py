@@ -4,31 +4,29 @@ from math import log10
 
 
 class Stone:
-    def __init__(self, engraving: str):
-        self.engraving = int(engraving)
+    def __init__(self, number_of_digits_):
+        self.number_of_digits = number_of_digits_
 
     def change(self) -> list:
-        digits = number_of_digits(self.engraving)
-        if int(self.engraving) == 0:
-            self.engraving = 1
+        if int(self.number_of_digits) == 1:
             return [self]
-        elif digits % 2 == 0:
-            new_stone = Stone(str(self.engraving)[digits // 2:])
-            self.engraving = int(str(self.engraving)[:digits // 2])
+        elif self.number_of_digits % 2 == 0:
+            new_stone = Stone(self.number_of_digits // 2)
+            self.number_of_digits = self.number_of_digits // 2
             return [self, new_stone]
         else:
-            self.engraving = self.engraving * 2024
+            self.number_of_digits = self.number_of_digits + 3
             return [self]
 
     def __str__(self):
-        return str(self.engraving)
+        return str(self.number_of_digits)
 
 
 class Stones:
     def __init__(self, data: str):
         self.stones: list[Stone] = []
         for stone in data.split(' '):
-            self.stones.append(Stone(stone))
+            self.stones.append(Stone(number_of_digits(int(stone))))
 
     def blink(self):
         new_stones = []
@@ -43,8 +41,8 @@ class Stones:
 def main():
     data = read_input_file(file_name='example', as_one_line=True)
     print(data)
-    ic(first(data, 25))
-    # ic(second(data))
+    # ic(first(data, 25))
+    ic(second(data))
 
 
 def first(data: str, times: int) -> int:
@@ -60,7 +58,6 @@ def second(data: str) -> int:
     for number in data.split():
         print(f'processing stone {number}')
         stones = Stones(number)
-        extra = []
         for i in range(0, 75):
             print(i)
             stones.blink()
